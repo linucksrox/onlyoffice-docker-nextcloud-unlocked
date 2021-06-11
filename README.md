@@ -7,4 +7,4 @@ This is a sample docker-compose/swarm stack file to run a customized version of 
 Use the stack.yml file and modify the JWT secret key and Traefik hostname directive.
 
 # Docker-compose
-You will need to adapt the stack.yml file to make this work in docker-compose. Labels need to be moved outside of the deploy section and un-indented one level (remove deploy altogether). Remove restart_policy, update_config and rollback_config and replace with just `restart:always`.
+Use docker-compose.yml and modify the JWT secret key and Traefik hostname directive.
