@@ -5,7 +5,7 @@ services:
   onlyoffice:
     image: alehoho/oo-ce-docker-license
 #    volumes:
-#      - ./fonts:/usr/share/fonts
+#      - ./fonts:/usr/share/fonts  # place custom fonts in this folder to overwrite the default font set
     environment:
       - JWT_ENABLED=true
       - JWT_SECRET=yoursecretgoeshere
