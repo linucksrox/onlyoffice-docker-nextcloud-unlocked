@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+
+  onlyoffice:
+    image: alehoho/oo-ce-docker-license
+#    volumes:
+#      - ./fonts:/usr/share/fonts  # place custom fonts in this folder to overwrite the default font set
+    environment:
+      - JWT_ENABLED=true
+      - JWT_SECRET=yoursecretgoeshere
+      - JWT_HEADER=NCAuth  # custom auth header, needs to be defined in Nextcloud's config.php (https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues/278)
+    networks:
+      - traefik-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.http.routers.onlyoffice.rule=Host(`office.example.com`)"
+      - "traefik.http.routers.onlyoffice.entrypoints=websecure"
+      - "traefik.http.routers.onlyoffice.tls=true"
+      - "traefik.http.routers.onlyoffice.tls.certresolver=certresolver"
+      - "traefik.http.routers.onlyoffice.service=onlyoffice-service"
+      - "traefik.http.routers.onlyoffice.middlewares=oo-header"
+      - "traefik.http.services.onlyoffice-service.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.oo-header.headers.referrerPolicy=no-referrer"
+      - "traefik.http.middlewares.oo-header.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.oo-header.headers.forceSTSHeader=true"
+      - "traefik.http.middlewares.oo-header.headers.stsPreload=true"
+      - "traefik.http.middlewares.oo-header.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.oo-header.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.oo-header.headers.customRequestHeaders.X-Forwarded-Proto=https"
+    restart: always
+
+networks:
+
+  traefik-public:
+    external: true
+    name: traefik-public
