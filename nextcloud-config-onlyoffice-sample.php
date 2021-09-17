@@ -3,3 +3,6 @@
   array (
     'jwt_header' => 'NCAuth',
   ),
+
+// Add this if you get an error about host not connected because it violates local access rules
+'allow_local_remote_servers' => true,
